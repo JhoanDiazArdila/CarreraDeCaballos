@@ -1,0 +1,16 @@
+com\mycompany\carreraburros\Controlador\ControlParticipante.class
+com\mycompany\carreraburros\Modelo\Clases\Participante.class
+com\mycompany\carreraburros\Controlador\ControlDueño.class
+com\mycompany\carreraburros\Modelo\Clases\Apuesta.class
+com\mycompany\carreraburros\Vista\CarreraBurros.class
+com\mycompany\carreraburros\Modelo\Clases\BurroCompetencia.class
+com\mycompany\carreraburros\Controlador\ControlBurroCompetencia.class
+com\mycompany\carreraburros\Modelo\Clases\Burro.class
+com\mycompany\carreraburros\Controlador\ControlBurro.class
+com\mycompany\carreraburros\Modelo\Clases\Competencia.class
+com\mycompany\carreraburros\Controlador\ControlCompetencia.class
+com\mycompany\carreraburros\Modelo\Persistencia\CRUD.class
+com\mycompany\carreraburros\Modelo\Clases\Usuario.class
+com\mycompany\carreraburros\Modelo\Clases\Dueño.class
+com\mycompany\carreraburros\Modelo\Persistencia\Conexion.class
+com\mycompany\carreraburros\Controlador\ControlApuesta.class
