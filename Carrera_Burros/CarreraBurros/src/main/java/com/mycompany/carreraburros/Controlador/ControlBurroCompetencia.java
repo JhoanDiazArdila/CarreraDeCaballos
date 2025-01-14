@@ -9,6 +9,7 @@ import com.mycompany.carreraburros.Modelo.Clases.BurroCompetencia;
 import com.mycompany.carreraburros.Modelo.Clases.Competencia;
 import com.mycompany.carreraburros.Modelo.Persistencia.CRUD;
 import com.mycompany.carreraburros.Modelo.Persistencia.Conexion;
+import com.mycompany.carreraburros.Modelo.Persistencia.LogManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -47,6 +48,7 @@ public class ControlBurroCompetencia {
             }
         }catch (Exception ex) {
             System.out.println("Error en la transacción: " + ex.getMessage());
+            LogManager.logError("CarreraBurros", ex.getMessage(), ex);
             CRUD.rollbackBD();
             throw ex;
         } finally {
@@ -79,6 +81,7 @@ public class ControlBurroCompetencia {
             }
         }catch (Exception ex) {
             System.out.println("Error en la transacción: " + ex.getMessage());
+            LogManager.logError("CarreraBurros", ex.getMessage(), ex);
             CRUD.rollbackBD(); 
             throw ex; 
         } finally {
@@ -111,6 +114,7 @@ public class ControlBurroCompetencia {
             
         }catch (SQLException ex) {
             System.out.println("Error al obtener el Burro de la Competencia: " + ex.getMessage());
+            LogManager.logError("CarreraBurros", ex.getMessage(), ex);
             throw ex; 
         } finally {
             CRUD.cerrarConexion();
@@ -141,6 +145,7 @@ public class ControlBurroCompetencia {
             
         }catch (SQLException ex) {
             System.out.println("Error al obtener el Burro de la Competencia: " + ex.getMessage());
+            LogManager.logError("CarreraBurros", ex.getMessage(), ex);
             throw ex; 
         } finally {
             CRUD.cerrarConexion();
@@ -170,6 +175,7 @@ public class ControlBurroCompetencia {
             }
         }catch (SQLException ex) {
             System.out.println("Error al obtener el Burro de la Competencia: " + ex.getMessage());
+            LogManager.logError("CarreraBurros", ex.getMessage(), ex);
             throw ex; 
         } finally {
             CRUD.cerrarConexion();
@@ -200,8 +206,9 @@ public class ControlBurroCompetencia {
                 System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
             }
             CRUD.cerrarConexion();
-        } catch (SQLException e) {
-            System.out.println("Error al obtener los Burros de las Competencias: " + e.getMessage());
+        } catch (SQLException ex) {
+            System.out.println("Error al obtener los Burros de las Competencias: " + ex.getMessage());
+            LogManager.logError("CarreraBurros", ex.getMessage(), ex);
             CRUD.cerrarConexion();
         }
     }
@@ -232,6 +239,7 @@ public class ControlBurroCompetencia {
             }
         }catch (Exception ex) {
             System.out.println("Error en la transacción: " + ex.getMessage());
+            LogManager.logError("CarreraBurros", ex.getMessage(), ex);
             CRUD.rollbackBD(); 
             throw ex; 
         } finally {
@@ -241,5 +249,32 @@ public class ControlBurroCompetencia {
         return false;
     }
     
+    
+    public static boolean existeBurroEnCompetencia(int idCompetencia, int idBurro) throws SQLException {
+
+        boolean existe = false;
+        CRUD.setConnection(Conexion.getConexion());
+
+        String verificar = "SELECT 1 FROM burro_competencia WHERE id_burro = ? AND id_competencia = ?";
+        List<Object> parametros = Arrays.asList(idBurro, idCompetencia);
+
+        try {
+            ResultSet rs = CRUD.consultarBD1(verificar, parametros);
+
+            if (rs.next()) {
+                existe = true;
+            }
+            rs.close();
+
+        } catch (SQLException ex) {
+            System.out.println("Error al verificar el Burro: " + ex.getMessage());
+            LogManager.logError("CarreraBurros", ex.getMessage(), ex);
+            throw ex;
+        } finally {
+            CRUD.cerrarConexion();
+        }
+        return existe;
+    }
+
     
 }

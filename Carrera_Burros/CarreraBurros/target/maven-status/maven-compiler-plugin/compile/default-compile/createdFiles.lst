@@ -6,6 +6,7 @@ com\mycompany\carreraburros\Vista\CarreraBurros.class
 com\mycompany\carreraburros\Modelo\Clases\BurroCompetencia.class
 com\mycompany\carreraburros\Controlador\ControlBurroCompetencia.class
 com\mycompany\carreraburros\Modelo\Clases\Burro.class
+com\mycompany\carreraburros\Modelo\Persistencia\LogManager.class
 com\mycompany\carreraburros\Controlador\ControlBurro.class
 com\mycompany\carreraburros\Modelo\Clases\Competencia.class
 com\mycompany\carreraburros\Controlador\ControlCompetencia.class

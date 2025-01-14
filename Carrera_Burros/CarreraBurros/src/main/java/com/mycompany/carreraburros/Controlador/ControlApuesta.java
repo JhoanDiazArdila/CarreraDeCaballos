@@ -11,6 +11,7 @@ import com.mycompany.carreraburros.Modelo.Clases.Competencia;
 import com.mycompany.carreraburros.Modelo.Clases.Participante;
 import com.mycompany.carreraburros.Modelo.Persistencia.CRUD;
 import com.mycompany.carreraburros.Modelo.Persistencia.Conexion;
+import com.mycompany.carreraburros.Modelo.Persistencia.LogManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -64,6 +65,7 @@ public class ControlApuesta {
             }
         }catch (Exception ex) {
             System.out.println("Error en la transacción: " + ex.getMessage());
+            LogManager.logError("CarreraBurros", ex.getMessage(), ex);
             CRUD.rollbackBD();
             throw ex;
         } finally {
@@ -100,6 +102,7 @@ public class ControlApuesta {
             }
         }catch (Exception ex) {
             System.out.println("Error en la transacción: " + ex.getMessage());
+            LogManager.logError("CarreraBurros", ex.getMessage(), ex);
             CRUD.rollbackBD(); 
             throw ex; 
         } finally {
@@ -130,6 +133,7 @@ public class ControlApuesta {
             }
         }catch (Exception ex) {
             System.out.println("Error en la transacción: " + ex.getMessage());
+            LogManager.logError("CarreraBurros", ex.getMessage(), ex);
             CRUD.rollbackBD(); 
             throw ex; 
         } finally {
@@ -161,6 +165,7 @@ public class ControlApuesta {
             rs.close();
         }catch (SQLException ex) {
             System.out.println("Error al obtenerlo " + ex.getMessage());
+            LogManager.logError("CarreraBurros", ex.getMessage(), ex);
             throw ex; 
         } finally {
             CRUD.cerrarConexion();
@@ -194,6 +199,7 @@ public class ControlApuesta {
             
         } catch (SQLException e) {
             System.out.println("Error al obtener los Participantes: " + e.getMessage());
+            LogManager.logError("CarreraBurros", e.getMessage(), e);
             CRUD.cerrarConexion();
         }
     }
@@ -218,6 +224,7 @@ public class ControlApuesta {
             }
         }catch (SQLException ex) {
             System.out.println("Error al obtener la lista : " + ex.getMessage());
+            LogManager.logError("CarreraBurros", ex.getMessage(), ex);
             throw ex; 
         } finally {
             
@@ -239,15 +246,16 @@ public class ControlApuesta {
                 System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
             }
             CRUD.cerrarConexion();
-        } catch (SQLException e) {
-            System.out.println("Error al obtener lista: " + e.getMessage());
+        } catch (SQLException ex) {
+            System.out.println("Error al obtener lista: " + ex.getMessage());
+            LogManager.logError("CarreraBurros", ex.getMessage(), ex);
             CRUD.cerrarConexion();
         }
         
     }
     
     
-    public static boolean existeApuesta(String identification) throws SQLException {
+    public static boolean existeApuesta(int identification) throws SQLException {
         boolean existe = false;
         CRUD.setConnection(Conexion.getConexion());
 
@@ -262,6 +270,7 @@ public class ControlApuesta {
             rs.close();
         } catch (SQLException ex) {
             System.out.println("Error al verificar el Apuesta: " + ex.getMessage());
+            LogManager.logError("CarreraBurros", ex.getMessage(), ex);
             throw ex;
         } finally {
             CRUD.cerrarConexion();
@@ -295,6 +304,7 @@ public class ControlApuesta {
             }
         }catch (SQLException ex) {
             System.out.println("Error al obtener la lista : " + ex.getMessage());
+            LogManager.logError("CarreraBurros", ex.getMessage(), ex);
             throw ex; 
         } finally {
             
@@ -324,8 +334,9 @@ public class ControlApuesta {
                 System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
             }
             CRUD.cerrarConexion();
-        } catch (SQLException e) {
-            System.out.println("Error al obtener lista: " + e.getMessage());
+        } catch (SQLException ex) {
+            System.out.println("Error al obtener lista: " + ex.getMessage());
+            LogManager.logError("CarreraBurros", ex.getMessage(), ex);
             CRUD.cerrarConexion();
         }
         
@@ -353,6 +364,7 @@ public class ControlApuesta {
             }
         }catch (SQLException ex) {
             System.out.println("Error al obtener la lista : " + ex.getMessage());
+            LogManager.logError("CarreraBurros", ex.getMessage(), ex);
             throw ex; 
         } finally {
             
@@ -382,8 +394,9 @@ public class ControlApuesta {
                 System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
             }
             CRUD.cerrarConexion();
-        } catch (SQLException e) {
-            System.out.println("Error al obtener lista: " + e.getMessage());
+        } catch (SQLException ex) {
+            System.out.println("Error al obtener lista: " + ex.getMessage());
+            LogManager.logError("CarreraBurros", ex.getMessage(), ex);
             CRUD.cerrarConexion();
         }
         
@@ -413,6 +426,7 @@ public class ControlApuesta {
             }
         }catch (SQLException ex) {
             System.out.println("Error al obtener la lista : " + ex.getMessage());
+            LogManager.logError("CarreraBurros", ex.getMessage(), ex);
             throw ex; 
         } finally {
             
@@ -442,8 +456,9 @@ public class ControlApuesta {
                 System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
             }
             CRUD.cerrarConexion();
-        } catch (SQLException e) {
-            System.out.println("Error al obtener lista: " + e.getMessage());
+        } catch (SQLException ex) {
+            System.out.println("Error al obtener lista: " + ex.getMessage());
+            LogManager.logError("CarreraBurros", ex.getMessage(), ex);
             CRUD.cerrarConexion();
         }
         

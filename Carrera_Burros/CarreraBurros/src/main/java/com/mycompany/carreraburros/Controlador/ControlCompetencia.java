@@ -7,6 +7,7 @@ package com.mycompany.carreraburros.Controlador;
 import com.mycompany.carreraburros.Modelo.Clases.Competencia;
 import com.mycompany.carreraburros.Modelo.Persistencia.CRUD;
 import com.mycompany.carreraburros.Modelo.Persistencia.Conexion;
+import com.mycompany.carreraburros.Modelo.Persistencia.LogManager;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -49,6 +50,7 @@ public class ControlCompetencia {
             }
         }catch (Exception ex) {
             System.out.println("Error en la transacción: " + ex.getMessage());
+            LogManager.logError("CarreraBurros", ex.getMessage(), ex);
             CRUD.rollbackBD();
             throw ex;
         } finally {
@@ -83,6 +85,7 @@ public class ControlCompetencia {
             }
         }catch (Exception ex) {
             System.out.println("Error en la transacción: " + ex.getMessage());
+            LogManager.logError("CarreraBurros", ex.getMessage(), ex);
             CRUD.rollbackBD(); 
             throw ex; 
         } finally {
@@ -114,6 +117,7 @@ public class ControlCompetencia {
             }
         }catch (Exception ex) {
             System.out.println("Error en la transacción: " + ex.getMessage());
+            LogManager.logError("CarreraBurros", ex.getMessage(), ex);
             CRUD.rollbackBD(); 
             throw ex; 
         } finally {
@@ -147,6 +151,7 @@ public class ControlCompetencia {
             
         }catch (SQLException ex) {
             System.out.println("Error al obtener el Competencia: " + ex.getMessage());
+            LogManager.logError("CarreraBurros", ex.getMessage(), ex);
             throw ex; 
         } finally {
             CRUD.cerrarConexion();
@@ -190,6 +195,7 @@ public class ControlCompetencia {
             }
         }catch (SQLException ex) {
             System.out.println("Error al obtener el Competencia: " + ex.getMessage());
+            LogManager.logError("CarreraBurros", ex.getMessage(), ex);
             throw ex; 
         } finally {
             CRUD.cerrarConexion();
@@ -212,8 +218,9 @@ public class ControlCompetencia {
                 System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
             }
             CRUD.cerrarConexion();
-        } catch (SQLException e) {
-            System.out.println("Error al obtener los Competencias: " + e.getMessage());
+        } catch (SQLException ex) {
+            System.out.println("Error al obtener los Competencias: " + ex.getMessage());
+            LogManager.logError("CarreraBurros", ex.getMessage(), ex);
             CRUD.cerrarConexion();
         }
     }
@@ -244,6 +251,7 @@ public class ControlCompetencia {
             }
         }catch (Exception ex) {
             System.out.println("Error en la transacción: " + ex.getMessage());
+            LogManager.logError("CarreraBurros", ex.getMessage(), ex);
             CRUD.rollbackBD(); 
             throw ex; 
         } finally {
@@ -254,6 +262,58 @@ public class ControlCompetencia {
     }
     
     
+    public static boolean existeCompetencia(int identification) throws SQLException {
+
+        boolean existe = false;
+        CRUD.setConnection(Conexion.getConexion());
+
+        String verificar = "SELECT 1 FROM competencias WHERE id_competencia = ?";
+        List<Object> parametros = Arrays.asList(identification);
+
+        try {
+            ResultSet rs = CRUD.consultarBD1(verificar, parametros);
+
+            if (rs.next()) {
+                existe = true;
+            }
+            rs.close();
+
+        } catch (SQLException ex) {
+            System.out.println("Error al verificar la competencia: " + ex.getMessage());
+            LogManager.logError("CarreraBurros", ex.getMessage(), ex);
+            throw ex;
+        } finally {
+            CRUD.cerrarConexion();
+        }
+        return existe;
+    }
+    
+    
+    public static boolean validarCompetenciaFinalizada(int identification) throws SQLException {
+
+        boolean finalizada = false;
+        CRUD.setConnection(Conexion.getConexion());
+
+        String verificar = "SELECT 1 FROM competencias WHERE id_competencia = ? AND finalizada = true";
+        List<Object> parametros = Arrays.asList(identification);
+
+        try {
+            ResultSet rs = CRUD.consultarBD1(verificar, parametros);
+
+            if (rs.next()) {
+                finalizada = true;
+            }
+            rs.close();
+
+        } catch (SQLException ex) {
+            System.out.println("Error al verificar la competencia: " + ex.getMessage());
+            LogManager.logError("CarreraBurros", ex.getMessage(), ex);
+            throw ex;
+        } finally {
+            CRUD.cerrarConexion();
+        }
+        return finalizada;
+    }
     
     
     

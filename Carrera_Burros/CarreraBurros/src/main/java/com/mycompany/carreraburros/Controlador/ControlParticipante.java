@@ -8,6 +8,7 @@ import com.mycompany.carreraburros.Modelo.Clases.Participante;
 import com.mycompany.carreraburros.Modelo.Clases.Dueño;
 import com.mycompany.carreraburros.Modelo.Persistencia.CRUD;
 import com.mycompany.carreraburros.Modelo.Persistencia.Conexion;
+import com.mycompany.carreraburros.Modelo.Persistencia.LogManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -47,6 +48,7 @@ public class ControlParticipante {
             }
         }catch (Exception ex) {
             System.out.println("Error en la transacción: " + ex.getMessage());
+            LogManager.logError("CarreraBurros", ex.getMessage(), ex);
             CRUD.rollbackBD();
             throw ex;
         } finally {
@@ -80,6 +82,7 @@ public class ControlParticipante {
             }
         }catch (Exception ex) {
             System.out.println("Error en la transacción: " + ex.getMessage());
+            LogManager.logError("CarreraBurros", ex.getMessage(), ex);
             CRUD.rollbackBD(); 
             throw ex; 
         } finally {
@@ -111,6 +114,7 @@ public class ControlParticipante {
             }
         }catch (Exception ex) {
             System.out.println("Error en la transacción: " + ex.getMessage());
+            LogManager.logError("CarreraBurros", ex.getMessage(), ex);
             CRUD.rollbackBD(); 
             throw ex; 
         } finally {
@@ -142,6 +146,7 @@ public class ControlParticipante {
             
         }catch (SQLException ex) {
             System.out.println("Error al obtener el Participante: " + ex.getMessage());
+            LogManager.logError("CarreraBurros", ex.getMessage(), ex);
             throw ex; 
         } finally {
             CRUD.cerrarConexion();
@@ -162,8 +167,9 @@ public class ControlParticipante {
             System.out.println("Saldo: " + p1.getSaldo());
             System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
             
-        } catch (SQLException e) {
-            System.out.println("Error al obtener los Participantes: " + e.getMessage());
+        } catch (SQLException ex) {
+            System.out.println("Error al obtener los Participantes: " + ex.getMessage());
+            LogManager.logError("CarreraBurros", ex.getMessage(), ex);
             CRUD.cerrarConexion();
         }
     }
@@ -188,6 +194,7 @@ public class ControlParticipante {
             }
         }catch (SQLException ex) {
             System.out.println("Error al obtener el Participante: " + ex.getMessage());
+            LogManager.logError("CarreraBurros", ex.getMessage(), ex);
             throw ex; 
         } finally {
             CRUD.cerrarConexion();
@@ -209,8 +216,9 @@ public class ControlParticipante {
                 System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
             }
             CRUD.cerrarConexion();
-        } catch (SQLException e) {
-            System.out.println("Error al obtener los Participantes: " + e.getMessage());
+        } catch (SQLException ex) {
+            System.out.println("Error al obtener los Participantes: " + ex.getMessage());
+            LogManager.logError("CarreraBurros", ex.getMessage(), ex);
             CRUD.cerrarConexion();
         }
     }
@@ -243,6 +251,7 @@ public class ControlParticipante {
             }
         }catch (Exception ex) {
             System.out.println("Error en la transacción: " + ex.getMessage());
+            LogManager.logError("CarreraBurros", ex.getMessage(), ex);
             CRUD.rollbackBD(); 
             throw ex; 
         } finally {
@@ -250,6 +259,34 @@ public class ControlParticipante {
             CRUD.cerrarConexion();  
         }
         return false;
+    }
+    
+    
+    public static boolean existeParticipante(String identification) throws SQLException {
+        
+        boolean existe = false;
+        CRUD.setConnection(Conexion.getConexion());
+        
+        String verificar = "SELECT 1 FROM participantes WHERE cedula_part = ?";
+        List<Object> parametros = Arrays.asList(identification);
+
+        try {
+            ResultSet rs = CRUD.consultarBD1(verificar, parametros);
+
+            // Si hay un resultado, significa que existe
+            if (rs.next()) {
+                existe = true;
+            }
+            rs.close();
+
+        } catch (SQLException ex) {
+            System.out.println("Error al verificar el Participante: " + ex.getMessage());
+            LogManager.logError("CarreraBurros", ex.getMessage(), ex);
+            throw ex;
+        } finally {
+            CRUD.cerrarConexion();
+        }
+        return existe;
     }
     
 }

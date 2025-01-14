@@ -7,11 +7,13 @@ package com.mycompany.carreraburros.Controlador;
 import com.mycompany.carreraburros.Modelo.Clases.Dueño;
 import com.mycompany.carreraburros.Modelo.Persistencia.CRUD;
 import com.mycompany.carreraburros.Modelo.Persistencia.Conexion;
+import com.mycompany.carreraburros.Modelo.Persistencia.LogManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Scanner;
 
 /**
  *
@@ -19,8 +21,24 @@ import java.util.List;
  */
 public class ControlDueño {
     
+    private static Scanner scanner = new Scanner(System.in);
+    public static String obtenerEntrada(String mensaje, String nombreCampo) {
+        String input;
+        do {
+            System.out.print(mensaje);
+            input = scanner.nextLine();
+            if (input.isEmpty()) {
+                System.out.println("Error: El campo '" + nombreCampo + "' no puede estar vacío. Intenta nuevamente.");
+            }
+        } while (input.isEmpty());
+        return input;
+    }
+    
     
     public static boolean createDueño(String cedula, String nombre, String telefono)throws SQLException{
+        
+        
+        
         
         Dueño d1 = new Dueño(cedula, nombre, telefono);
         
@@ -44,6 +62,7 @@ public class ControlDueño {
             }
         }catch (Exception ex) {
             System.out.println("Error en la transacción: " + ex.getMessage());
+            LogManager.logError("CarreraBurros", ex.getMessage(), ex);
             CRUD.rollbackBD();
             throw ex;
         } finally {
@@ -77,6 +96,7 @@ public class ControlDueño {
             }
         }catch (Exception ex) {
             System.out.println("Error en la transacción: " + ex.getMessage());
+            LogManager.logError("CarreraBurros", ex.getMessage(), ex);
             CRUD.rollbackBD(); 
             throw ex; 
         } finally {
@@ -108,6 +128,7 @@ public class ControlDueño {
             }
         }catch (Exception ex) {
             System.out.println("Error en la transacción: " + ex.getMessage());
+            LogManager.logError("CarreraBurros", ex.getMessage(), ex);
             CRUD.rollbackBD(); 
             throw ex; 
         } finally {
@@ -138,6 +159,7 @@ public class ControlDueño {
             
         }catch (SQLException ex) {
             System.out.println("Error al obtener el Dueño: " + ex.getMessage());
+            LogManager.logError("CarreraBurros", ex.getMessage(), ex);
             throw ex; 
         } finally {
             
@@ -166,6 +188,7 @@ public class ControlDueño {
 
         } catch (SQLException ex) {
             System.out.println("Error al verificar el Dueño: " + ex.getMessage());
+            LogManager.logError("CarreraBurros", ex.getMessage(), ex);
             throw ex;
         } finally {
             CRUD.cerrarConexion();
@@ -192,6 +215,7 @@ public class ControlDueño {
             }
         }catch (SQLException ex) {
             System.out.println("Error al obtener el Dueño: " + ex.getMessage());
+            LogManager.logError("CarreraBurros", ex.getMessage(), ex);
             throw ex; 
         } finally {
             
@@ -213,8 +237,9 @@ public class ControlDueño {
                 System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
             }
             CRUD.cerrarConexion();
-        } catch (SQLException e) {
-            System.out.println("Error al obtener los Dueños: " + e.getMessage());
+        } catch (SQLException ex) {
+            System.out.println("Error al obtener los Dueños: " + ex.getMessage());
+            LogManager.logError("CarreraBurros", ex.getMessage(), ex);
             CRUD.cerrarConexion();
         }
         
